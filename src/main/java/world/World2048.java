@@ -10,9 +10,13 @@ import java.util.List;
  */
 public class World2048 {
 
-    protected int width;
-    protected int height;
+    public final int width;
+    public final int height;
     protected List<Cell> cellList;
+
+    public World2048() {
+        this(4, 4);
+    }
 
     public World2048(int width, int height) {
         this.width = width;
@@ -21,40 +25,23 @@ public class World2048 {
     }
 
     public void initialize() {
-        addARandomCellToWorld();
-        addARandomCellToWorld();
+        addNewCellToWorld();
+        addNewCellToWorld();
     }
 
     protected int getRandomValue() {
         return Math.random() <= 0.1 ? 4 : 2;
     }
 
-    protected int getRandomPositionX() {
-        return (int) (Math.random() * width);
+    protected int getRandomPosition(int size) {
+        return (int) (Math.random() * size);
     }
 
-    protected int getRandomPositionY() {
-        return (int) (Math.random() * height);
-    }
-
-    public World2048() {
-        this(4, 4);
-    }
-
-    protected void addARandomCellToWorld() {
-        cellList.add(new Cell(getRandomValue(), getRandomPositionX(), getRandomPositionY()));
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public List<Cell> getCellList() {
-        return cellList;
+    protected boolean addNewCellToWorld() {
+        if (cellList.size() == width * height)
+            return false;
+        cellList.add(new Cell(getRandomValue(), getRandomPosition(width), getRandomPosition(height)));
+        return true;
     }
 
     public int getNumberOfCells() {
@@ -63,9 +50,9 @@ public class World2048 {
 
     public class Cell {
 
+        public int value;
         public int y;
         public int x;
-        public int value;
 
         public Cell(int value, int x, int y) {
             this.value = value;
