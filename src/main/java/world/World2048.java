@@ -40,36 +40,40 @@ public class World2048 {
     protected boolean addNewCellToWorld() {
         if (cellList.size() == width * height)
             return false;
-        cellList.add(new Cell(getRandomValue(), getRandomPosition(width), getRandomPosition(height)));
+
+        Cell newCell;
+        do {
+            newCell = new Cell(getRandomValue(), getRandomPosition(width), getRandomPosition(height));
+        } while (!checkIfCellIsValid(newCell));
+
+        cellList.add(newCell);
         return true;
+    }
+
+    private boolean checkIfCellIsValid(Cell newCell) {
+        for (Cell cell : cellList)
+            if (newCell.doCellOverlaps(cell))
+                return false;
+        return true;
+    }
+
+    protected List<Cell> getRow(int rowIndex) {
+        ArrayList<Cell> row = new ArrayList<Cell>();
+        for (Cell cell : cellList)
+            if (cell.getY() == rowIndex)
+                row.add(cell);
+        return row;
+    }
+
+    protected List<Cell> getColumn(int columnNumber) {
+        ArrayList<Cell> column = new ArrayList<Cell>();
+        for (Cell cell : cellList)
+            if (cell.getX() == columnNumber)
+                column.add(cell);
+        return column;
     }
 
     public int getNumberOfCells() {
         return cellList.size();
-    }
-
-    public class Cell {
-
-        public int value;
-        public int y;
-        public int x;
-
-        public Cell(int value, int x, int y) {
-            this.value = value;
-            this.x = x;
-            this.y = y;
-        }
-
-        public int getCellValue() {
-            return value;
-        }
-
-        public int getPositionX() {
-            return x;
-        }
-
-        public int getPositionY() {
-            return y;
-        }
     }
 }
