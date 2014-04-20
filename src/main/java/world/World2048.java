@@ -1,7 +1,7 @@
 package world;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * User: Eptwalabha
@@ -71,6 +71,10 @@ public class World2048 {
             if (cell.getX() == columnNumber)
                 column.add(cell);
         return column;
+    }
+
+    protected void orderCells(List<Cell> cellList, Comparator<Cell> comparator) {
+        Collections.sort(cellList, comparator);
     }
 
     public int getNumberOfCells() {

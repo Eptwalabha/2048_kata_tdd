@@ -1,6 +1,9 @@
 import org.junit.Test;
 import world.Cell;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
