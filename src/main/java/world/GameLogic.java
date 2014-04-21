@@ -18,8 +18,29 @@ public class GameLogic {
 
             if (cellA.getValue() == cellB.getValue()) {
                 cellA.doubleValue();
+                cellB.removeFromWorld();
                 cellList.remove(index + 1);
             }
         }
+    }
+
+    public static void pushCellsLeft(List<Cell> cellList) {
+        for (int index = 0, size = cellList.size(); index < size; index++)
+            cellList.get(index).setX(index);
+    }
+
+    public static void pushCellsRight(List<Cell> cellList, int width) {
+        for (int index = 0, size = cellList.size(); index < size; index++)
+            cellList.get(index).setX(width - (index + 1));
+    }
+
+    public static void pushCellsTop(List<Cell> cellList) {
+        for (int index = 0, size = cellList.size(); index < size; index++)
+            cellList.get(index).setY(index);
+    }
+
+    public static void pushCellsDown(List<Cell> cellList, int height) {
+        for (int index = 0, size = cellList.size(); index < size; index++)
+            cellList.get(index).setY(height - (index + 1));
     }
 }

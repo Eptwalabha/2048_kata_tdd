@@ -1,12 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 import world.Cell;
-import world.CellComparator;
-import world.GameLogic;
 import world.World2048;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -47,16 +43,14 @@ public class WorldTest {
 
     @Test
     public void canTestThatWorldHasTwoCellsOfValue2And4() {
-        worldMock = new WorldMock(new int[]{2, 2, 2, 4, 3, 3});
-        worldMock.initialize();
+        initializeWorldWithThisValues(4, 4, new int[]{2, 2, 2, 4, 3, 3});
         assertThat(worldMock.getCellList().get(0).getValue()).isEqualTo(2);
         assertThat(worldMock.getCellList().get(1).getValue()).isEqualTo(4);
     }
 
     @Test
     public void canTestThatWorldHasTwoCellsOfCertainPosition() {
-        worldMock = new WorldMock(new int[]{2, 2, 2, 4, 3, 3});
-        worldMock.initialize();
+        initializeWorldWithThisValues(4, 4, new int[]{2, 2, 2, 4, 3, 3});
         assertThat(worldMock.getCellList().get(0).getX()).isEqualTo(2);
         assertThat(worldMock.getCellList().get(0).getY()).isEqualTo(2);
         assertThat(worldMock.getCellList().get(1).getX()).isEqualTo(3);
@@ -65,8 +59,7 @@ public class WorldTest {
 
     @Test
     public void canAddANewCellToTheWorld() {
-        worldMock = new WorldMock(new int[]{2, 2, 2, 2, 2, 3, 2, 2, 4});
-        worldMock.initialize();
+        initializeWorldWithThisValues(4, 4, new int[]{2, 2, 2, 2, 2, 3, 2, 2, 4});
         assertThat(worldMock.getNumberOfCells()).isEqualTo(2);
         assertThat(worldMock.addNewCellToWorld()).isTrue();
         assertThat(worldMock.getNumberOfCells()).isEqualTo(3);
@@ -74,8 +67,7 @@ public class WorldTest {
 
     @Test
     public void cannotAddAnymoreCellToWorldIfThereIsNoPlaceLeft() {
-        worldMock = new WorldMock(3, 1, new int[]{2, 0, 0, 4, 0, 1, 2, 1, 0});
-        worldMock.initialize();
+        initializeWorldWithThisValues(3, 1, new int[]{2, 0, 0, 4, 0, 1, 2, 0, 2});
         assertThat(worldMock.getNumberOfCells()).isEqualTo(2);
         assertThat(worldMock.addNewCellToWorld()).isTrue();
         assertThat(worldMock.getNumberOfCells()).isEqualTo(3);
@@ -85,8 +77,7 @@ public class WorldTest {
 
     @Test
     public void cannotPlaceTwoNewCellsAtTheSamePlace() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 2, 0, 0, 2, 1, 2});
-        worldMock.initialize();
+        initializeWorldWithThisValues(4, 4, new int[]{2, 0, 0, 2, 0, 0, 2, 1, 2});
         Cell cellA = worldMock.getCellList().get(0);
         Cell cellB = worldMock.getCellList().get(1);
         assertThat(cellA.getX()).isEqualTo(0);
@@ -97,15 +88,14 @@ public class WorldTest {
 
     @Test
     public void canRetrieveAnEmptyLineOfCell() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 2, 0, 1});
-        List<Cell> cellList = worldMock.getRow(0);
+        initializeWorldWithThisValues(4, 4, new int[]{2, 0, 0, 2, 3, 0});
+        List<Cell> cellList = worldMock.getRow(1);
         assertThat(cellList.size()).isEqualTo(0);
     }
 
     @Test
     public void canRetrieveAListOfCellOfTwoElements() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 2, 1, 0, 2, 1, 1});
-        worldMock.initialize();
+        initializeWorldWithThisValues(4, 4, new int[]{2, 0, 0, 2, 1, 0, 2, 1, 1});
         List<Cell> cellList = worldMock.getRow(0);
         assertThat(cellList.size()).isEqualTo(2);
         worldMock.addNewCellToWorld();
@@ -115,27 +105,36 @@ public class WorldTest {
 
     @Test
     public void canRetrieveAnEmptyListOfCellForAnEmptyColumn() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 2, 0, 1, 2, 1, 1});
+        initializeWorldWithThisValues(4, 4, new int[]{2, 1, 0, 2, 1, 1, 2, 1, 1});
         List<Cell> cellList = worldMock.getColumn(0);
         assertThat(cellList.size()).isEqualTo(0);
     }
 
     @Test
     public void canRetrieveAListOfCellForAnGivenColumn() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 2, 0, 1, 2, 1, 1});
-        worldMock.initialize();
+        initializeWorldWithThisValues(4, 4, new int[]{2, 0, 0, 2, 0, 1, 2, 1, 1});
         List<Cell> cellList = worldMock.getColumn(0);
         assertThat(cellList.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void canDeleteCellOfTheWorld() {
+        initializeWorldWithThisValues(4, 4, new int[]{2, 0, 0, 2, 1, 0});
+        worldMock.getRow(0).get(0).removeFromWorld();
+        worldMock.cleanWorld();
+        assertThat(worldMock.getRow(0).size()).isEqualTo(1);
+
+    }
+
+    private void initializeWorldWithThisValues(int width, int height, int[] cellsInformation) {
+        worldMock = new WorldMock(width, height, cellsInformation);
+        worldMock.initialize();
     }
 
     private class WorldMock extends World2048 {
 
         private int[] randomValues;
         private int counter = 0;
-
-        public WorldMock(int[] randomValues) {
-            this.randomValues = randomValues;
-        }
 
         public WorldMock(int width, int height, int[] randomValues) {
             super(width, height);
@@ -173,6 +172,10 @@ public class WorldTest {
 
         private int random() {
             return (counter < randomValues.length) ? randomValues[counter++] : 0;
+        }
+
+        public void cleanWorld() {
+            super.cleanWorld();
         }
     }
 }

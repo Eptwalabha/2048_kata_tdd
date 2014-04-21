@@ -76,4 +76,10 @@ public class World2048 {
 
         return cellList.size();
     }
+
+    public void cleanWorld() {
+        for (int index = cellList.size() - 1; index >= 0; index--)
+            if (cellList.get(index).hasToBeRemoved())
+                cellList.remove(cellList.get(index));
+    }
 }
