@@ -1,15 +1,12 @@
 import org.junit.Test;
 import world.Cell;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Created by eptwalabha on 17/04/14.
  */
-public class TestCell {
+public class CellTest {
     @Test
     public void canReturnTrueWhenTwoCellsOverlap() {
         Cell cellA = new Cell(2,0,0);
@@ -22,5 +19,15 @@ public class TestCell {
         Cell cellA = new Cell(2,0,0);
         Cell cellB = new Cell(2,1,0);
         assertThat(cellA.doCellOverlaps(cellB)).isFalse();
+    }
+
+    @Test
+    public void canDoubleTheValueOfACell() {
+        Cell cell = new Cell(2, 0, 0);
+        cell.doubleValue();
+        assertThat(cell.getValue()).isEqualTo(4);
+        cell.doubleValue();
+        cell.doubleValue();
+        assertThat(cell.getValue()).isEqualTo(16);
     }
 }

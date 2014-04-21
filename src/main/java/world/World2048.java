@@ -1,6 +1,5 @@
 package world;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -73,11 +72,8 @@ public class World2048 {
         return column;
     }
 
-    protected void orderCells(List<Cell> cellList, Comparator<Cell> comparator) {
-        Collections.sort(cellList, comparator);
-    }
-
     public int getNumberOfCells() {
+
         return cellList.size();
     }
 }

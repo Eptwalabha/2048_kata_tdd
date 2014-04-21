@@ -2,8 +2,10 @@ import org.junit.Before;
 import org.junit.Test;
 import world.Cell;
 import world.CellComparator;
+import world.GameLogic;
 import world.World2048;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -14,7 +16,7 @@ import static org.fest.assertions.Assertions.assertThat;
  * Date: 15/04/2014
  * Time: 21:49
  */
-public class TestWorld {
+public class WorldTest {
 
     private World2048 world;
     private WorldMock worldMock;
@@ -126,55 +128,6 @@ public class TestWorld {
         assertThat(cellList.size()).isEqualTo(2);
     }
 
-    @Test
-    public void canSortAListOfCellByRowAscendant() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 4, 3, 0, 8, 1, 0});
-        worldMock.initialize();
-        worldMock.addNewCellToWorld();
-        List<Cell> cellList = worldMock.getRow(0);
-        worldMock.orderCells(cellList, CellComparator.ROW);
-        assertThat(cellList.get(0).getX()).isEqualTo(0);
-        assertThat(cellList.get(1).getX()).isEqualTo(1);
-        assertThat(cellList.get(2).getX()).isEqualTo(3);
-    }
-
-    @Test
-    public void canSortAListOfCellByRowDescendant() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 4, 3, 0, 8, 1, 0});
-        worldMock.initialize();
-        worldMock.addNewCellToWorld();
-        List<Cell> cellList = worldMock.getRow(0);
-        worldMock.orderCells(cellList, CellComparator.desc(CellComparator.ROW));
-        assertThat(cellList.get(0).getX()).isEqualTo(3);
-        assertThat(cellList.get(1).getX()).isEqualTo(1);
-        assertThat(cellList.get(2).getX()).isEqualTo(0);
-    }
-
-    @Test
-    public void canSortAListOfCellByColumnAscendant() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 4, 0, 3, 8, 0, 1});
-        worldMock.initialize();
-        worldMock.addNewCellToWorld();
-        List<Cell> cellList = worldMock.getColumn(0);
-        worldMock.orderCells(cellList, CellComparator.COLUMN);
-        assertThat(cellList.get(0).getY()).isEqualTo(0);
-        assertThat(cellList.get(1).getY()).isEqualTo(1);
-        assertThat(cellList.get(2).getY()).isEqualTo(3);
-    }
-
-    @Test
-    public void canSortAListOfCellByColumnDescendant() {
-        worldMock = new WorldMock(new int[]{2, 0, 0, 4, 0, 3, 8, 0, 1});
-        worldMock.initialize();
-        worldMock.addNewCellToWorld();
-        List<Cell> cellList = worldMock.getColumn(0);
-        worldMock.orderCells(cellList, CellComparator.desc(CellComparator.COLUMN));
-        assertThat(cellList.get(0).getY()).isEqualTo(3);
-        assertThat(cellList.get(1).getY()).isEqualTo(1);
-        assertThat(cellList.get(2).getY()).isEqualTo(0);
-    }
-
-
     private class WorldMock extends World2048 {
 
         private int[] randomValues;
@@ -220,11 +173,6 @@ public class TestWorld {
 
         private int random() {
             return (counter < randomValues.length) ? randomValues[counter++] : 0;
-        }
-
-        @Override
-        public void orderCells(List<Cell> cellList, Comparator<Cell> comparator) {
-            super.orderCells(cellList, comparator);
         }
     }
 }

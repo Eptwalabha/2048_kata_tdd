@@ -1,7 +1,5 @@
 package world;
 
-import java.util.Comparator;
-
 /**
  * Created by eptwalabha on 17/04/14.
  */
@@ -31,5 +29,9 @@ public class Cell {
 
     public boolean doCellOverlaps(Cell cell) {
         return x == cell.x && y == cell.y;
+    }
+
+    public void doubleValue() {
+        value *= 2;
     }
 }
